@@ -7,6 +7,83 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+
+  const canvas = document.querySelector('#draw');
+  console.log('canvas: ', canvas);
+
+  const ctx = canvas.getContext('2d');
+  console.log('ctx: ', ctx);
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 100;
+  
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0;
+  let direction = true;
+  
+  function draw(e) {
+    
+    console.log('isDrawing: ', isDrawing);
+    if (!isDrawing) return; // stop function from running when the mouse is not moving
+    console.log('event: ', e);
+    
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    ctx.beginPath();
+
+    // linewidth increases as the hue increments and resets when hue resets
+   
+
+    // where lines start from
+    ctx.moveTo(lastX, lastY);
+    // where lines go
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+
+    [ lastX, lastY ] = [ e.offsetX, e.offsetY ];
+    
+    //increase the hue amount every time event is fired
+    hue++;
+
+    // after hue passes 360 reset it
+    if (hue >= 360) {
+      hue = 0;
+    }
+
+// when line width reaches 100, reverse the increment to decrement so it goes in reverse back down to 100. this creates the line going from thin to thick, then thick to thin,
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1){
+      // flip the direction value
+      direction = !direction
+    }
+    // if direction value is true, incsrease, if false descrease
+    if(direction){
+      ctx.lineWidth++;
+
+    } else {
+      ctx.lineWidth--;
+    }
+  }
+
+  canvas.addEventListener('mousemove', draw);
+
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+
+  });
+
+
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
 </script>
 
 <style>

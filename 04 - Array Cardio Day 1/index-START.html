@@ -27,32 +27,128 @@
       { first: 'Hanna', last: 'Hammarström', year: 1829, passed: 1909 }
     ];
 
+
     const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel', 'Beddoes, Mick', 'Beecher, Henry', 'Beethoven, Ludwig', 'Begin, Menachem', 'Belloc, Hilaire', 'Bellow, Saul', 'Benchley, Robert', 'Benenson, Peter', 'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony', 'Bennington, Chester', 'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd', 'Berger, Ric', 'Bergman, Ingmar', 'Berio, Luciano', 'Berle, Milton', 'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra', 'Berra, Yogi', 'Berry, Halle', 'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin', 'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose', 'Biko, Steve', 'Billings, Josh', 'Biondo, Frank', 'Birrell, Augustine', 'Black, Elk', 'Blair, Robert', 'Blair, Tony', 'Blake, William'];
 
     // Array.prototype.filter()
-    // 1. Filter the list of inventors for those who were born in the 1500's
+    // 1. Filter the list of inventors for those who were born in the 1500's]
+
+      const young = inventors.filter( inventor => inventor.year > 1500 && inventor.year < 1600  );
+      // console.table( young);
+      
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
 
+    const names = inventors.map(inventor => `${inventor.first} ${inventor.last}`)
+    // console.log('names: ', names);
+
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+        // sort 
+    const birthdays = inventors.sort((a,b) => { if (a.year > b.year) { return 1} else { return -1}});
+    // console.table(birthdays);
+
+
+    const youngest = inventors.sort((a, b) => {
+      a.year > b.year ? 1 : -1;
+    })
+
+    // console.table(youngest);
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
 
+    const totalYears = inventors.reduce((lastTotal, inventor) => {
+      return lastTotal + (inventor.passed - inventor.year);
+    }, 0);
+
+      const inventors2 = [
+        { first: 'Albert', last: 'Einstein', year: 2, passed: 5 },
+        { first: 'Isaac', last: 'Newton', year: 3, passed: 7 },
+      ]
+
+
+      const totalYears2 = inventors2.reduce((lastTotalOfLoop, inventor) => {
+        return lastTotalOfLoop + (inventor.passed - inventor.year);
+      }, 0);    
+    // 0 represents the starting number of loop - every loop - lastTotalOfLoop gets added to it
+
+    // console.log(totalYears);
+    // console.log(totalYears2);
+    
+
     // 5. Sort the inventors by years lived
+
+    const oldest = inventors.sort((a,b) => {
+
+      const lastGuy = a.passed - a.year;
+      const nextGuy = b.passed - b.year;
+      
+     return lastGuy > nextGuy ? -1 : 1;
+    });
+
+    
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+
+    const category = document.querySelector('.mw-category');
+    
+
+    if (category !== null){ 
+      
+      const links = Array.from(category.querySelectorAll('a')); 
+  
+
+    // const links = [...category.querySelectorAll('a')];}
+
+    const de = links
+                  .map(link => link.textContent)
+                  .filter(streetName => streetName.includes('de'))
+    };
 
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
 
+    const alpha = people.sort((lastOne, nextOne) => {
+      // console.log('lastOne: ', lastOne, 'nextOne: ', nextOne);
+
+        // destructuing the split of the names array into 2 arrays
+      const [aLastName, aFirstName] = lastOne.split(', ');
+      const [bLastName, bFirstName] = nextOne.split(', ');
+
+      return aLastName > bLastName ? 1 : -1;
+    });
+
+    // console.table(alpha);
+    
+
     // 8. Reduce Exercise
     // Sum up the instances of each of these
-    const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+        // starting point is a blank object
+    const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck', 'scooter' ];
+
+    const transport = data.reduce((lastObjectValue, itemToAddToObject) => {
+      
+      // make an entry into the object for a key if there is no key
+      // if 'bike' doesnt exist in object, add bike to object
+      if (!lastObjectValue[itemToAddToObject]) {
+        lastObjectValue[itemToAddToObject] = 0;
+      }
+      
+      // if key does exist, increment the value by 1
+      lastObjectValue[itemToAddToObject]++
+      console.log('lastObjectValue: ', lastObjectValue);
+
+      return lastObjectValue;
+      
+    }, {// empty object as starter value for reduce
+    })
+    
+    console.log('transport: ', transport);
+    
 
   </script>
 </body>
